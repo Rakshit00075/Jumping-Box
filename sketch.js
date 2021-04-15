@@ -1,54 +1,59 @@
-const Engine = Matter.Engine;
-const World= Matter.World;
-const Bodies = Matter.Bodies;
+var canvas;
+var block1,block2,block3,block4;
+var ball, edges;
+var music;
 
-var engine, world;
-var hammer;
-var iron;
-var rubber;
-var coal;
+function preload(){
+    music = loadSound("music.mp3");
+}
 
 
 function setup(){
-    var canvas = createCanvas(1200,600);
-    engine = Engine.create();
-    world = engine.world;
+    canvas = createCanvas(800,600);
 
-    plane = new Plane(600,height,1200,20)
-    hammer = new Hammer(10,100);
-    iron = new Iron(300,470,80,50);
-    rubber = new Rubber(700,370,20,10);
-    coal = new Coal(650, 270, 80, 80);
-   stones1=new Stones(250,470);
-   stones2=new Stones(270,470);
-   stones3=new Stones(390,470);
-   stones4=new Stones(400,470);
-   stones5=new Stones(410,470);
-   stones6=new Stones(280,470);
-   stones7=new Stones(360,470);
-   stones8=new Stones(430,470);
-   stones9=new Stones(220,470);
-   stones10=new Stones(430,470);
-  }
+    block1 = createSprite(0,580,360,30);
+    block1.shapeColor = rgb(0,0,255);
 
-function draw(){
-    background("lightBlue");
-    Engine.update(engine);
+    block2 = createSprite(295,580,200,30);
+    block2.shapeColor = rgb(255,128,0);
 
+    block3 = createSprite(515,580,200,30);
+    block3.shapeColor = rgb(153,0,76);
 
-    plane.display();
-    hammer.display();
-    iron.display();
-    rubber.display();
-    coal.display();
-    stones1.display();
-    stones2.display();
-    stones3.display();
-    stones4.display();
-    stones5.display();
-    stones6.display();
-    stones7.display();
-    stones8.display();
-    stones9.display();
-    stones10.display();
+    block4 = createSprite(740,580,220,30);
+    block4.shapeColor = rgb(0,100,0);
+
+    ball = createSprite(random(20,750),100, 40,40);
+    ball.shapeColor = rgb(255,255,255);
+    ball.velocityX = 4;
+    ball.velocityY = 9;
+
+}
+
+function draw() {
+    background(rgb(169,169,169));
+    edges=createEdgeSprites();
+    ball.bounceOff(edges);
+
+    if(block1.isTouching(ball) && ball.bounceOff(block1)){
+        ball.shapeColor = rgb(0,0,255);
+        music.play();
+    }
+
+    if(block2.isTouching(ball)){
+        ball.shapeColor = rgb(255,128,0);
+        ball.velocityX = 0;
+        ball.velocityY = 0;
+        music.stop();
+    }
+
+    if(block3.isTouching(ball) && ball.bounceOff(block3)){
+        ball.shapeColor = rgb(153,0,76);
+    }
+
+    if(block4.isTouching(ball) && ball.bounceOff(block4)){
+        ball.shapeColor = rgb(0,100,0);
+    }
+
+    drawSprites();
 }
